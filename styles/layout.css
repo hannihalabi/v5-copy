@@ -1,0 +1,34 @@
+/* Base vertical rhythm for section blocks */
+.section {
+  padding-block: var(--space-lg);
+}
+
+/* Section background modifiers */
+.section--light {
+  background-color: var(--color-surface);
+}
+
+.section--alt {
+  background-color: var(--color-background);
+}
+
+/* Utility grid for two-column content */
+.layout-two-column {
+  display: grid;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  /* Switch to two equal columns on tablets and up */
+  .layout-two-column {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Slightly increase section padding on wider screens */
+  .section {
+    padding-block: calc(var(--space-lg) * 1.2);
+  }
+}

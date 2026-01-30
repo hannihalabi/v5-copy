@@ -1,0 +1,37 @@
+/* Language Switcher */
+.lang-switcher {
+    display: flex;
+    gap: var(--space-xs);
+    margin-left: var(--space-sm);
+    align-items: center;
+}
+
+.lang-btn {
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    /* Force emoji rendering */
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-variant-emoji: emoji;
+    font-weight: normal;
+    font-style: normal;
+    /* Prevent color overrides */
+    color: inherit;
+}
+
+.lang-btn:hover {
+    transform: scale(1.1);
+}
+
+.lang-btn--active {
+    cursor: default;
+    pointer-events: none;
+}
+
+/* Mobile adjustment */
+@media (max-width: 900px) {
+    .hero__social {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

@@ -1,0 +1,126 @@
+/* Basvariabler och grundtypografi för Creating Homes STHLM AB */
+:root {
+  --color-background: #d5c1b0; /* Patagonia Roman Clay */
+  --color-surface: #ffffff;
+  --color-text-primary: #414141;
+  --color-text-secondary: #6b6b6b;
+  --color-text-inverse: #ffffff;
+  --color-accent: #59665c; /* Card Room Green */
+  --color-accent-strong: #4d1f23; /* Be Witched */
+  --color-neutral: #e5ded8;
+  --color-hero-heading: #f6f3f1;
+
+  --font-heading: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --line-height-heading: 1.2;
+  --line-height-body: 1.6;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 3rem;
+  --space-xl: 5rem;
+  --radius-base: 0.5rem;
+  --shadow-soft: 0 12px 24px rgba(58, 44, 40, 0.12);
+  --max-content-width: 1100px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  line-height: var(--line-height-body);
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  overflow-x: hidden;
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+p {
+  margin: 0 0 var(--space-sm);
+  color: var(--color-text-secondary);
+}
+
+ul,
+ol {
+  margin: 0 0 var(--space-sm);
+  padding-left: var(--space-md);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 var(--space-sm);
+  font-family: var(--font-heading);
+  line-height: var(--line-height-heading);
+  color: var(--color-text-primary);
+}
+
+button {
+  font-family: inherit;
+}
+
+.container {
+  width: min(100% - 2 * var(--space-sm), var(--max-content-width));
+  margin-inline: auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-100%);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  border-radius: 0 0 var(--radius-base) var(--radius-base);
+  text-decoration: none;
+  font-weight: 600;
+  z-index: 999;
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}

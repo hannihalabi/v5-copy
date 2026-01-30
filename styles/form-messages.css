@@ -1,0 +1,41 @@
+/* Contact Form Messages */
+.form-message {
+    display: none;
+    padding: var(--space-sm);
+    margin: var(--space-sm) 0;
+    border-radius: var(--radius-base);
+    font-weight: 500;
+    font-size: 0.95rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.form-message--success {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #2e7d32;
+    border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.form-message--error {
+    background-color: rgba(211, 47, 47, 0.1);
+    color: #c62828;
+    border: 1px solid rgba(211, 47, 47, 0.2);
+}
+
+/* Loading state for submit button */
+.cta.is-loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+    position: relative;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
