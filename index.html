@@ -2,26 +2,7 @@
 <html lang="sv">
 
 <head>
-  <!-- Google Tag Manager -->
-  <script>(function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({
-        'gtm.start':
-          new Date().getTime(), event: 'gtm.js'
-      }); var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-KJV6RV8L');</script>
-  <!-- End Google Tag Manager -->
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-31473664DD"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'G-31473664DD');
-  </script>
-  <!-- Metadata och SEO-inställningar för sidan -->
+<!-- Metadata och SEO-inställningar för sidan -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Creating Homes STHLM AB – Premium interior styling för hem och kontor</title>
@@ -50,45 +31,38 @@
   <meta property="og:locale" content="sv_SE" />
   <!-- Strukturerad data för sökmotorer -->
   <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        "name": "Creating Homes STHLM AB",
-        "url": "https://creatinghomes.se/",
-        "image": "https://creatinghomes.se/pics/OG/OG.jpeg",
-        "description": "Creating Homes STHLM AB erbjuder skräddarsydd interior styling och heminredning för bostäder och kontor.",
-        "areaServed": {
-          "@type": "AdministrativeArea",
-          "name": "Stockholm"
-        },
-        "serviceType": "Interior styling",
-        "offers": {
-          "@type": "Offer",
-          "name": "Kostnadsfri konsultation",
-          "price": "0",
-          "priceCurrency": "SEK"
-        },
-        "potentialAction": {
-          "@type": "Action",
-          "name": "Boka konsultation",
-          "target": "https://creatinghomes.se/#kontakt"
-        }
-      }
-    </script>
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://creatinghomes.se/#business",
+      "name": "Creating Homes STHLM AB",
+      "url": "https://creatinghomes.se/",
+      "image": "https://creatinghomes.se/pics/OG/OG.jpeg",
+      "description": "Creating Homes STHLM AB erbjuder skräddarsydd interior styling och heminredning för bostäder och kontor.",
+      "telephone": "+46738182802",
+      "email": "info@creatinghomes.se",
+      "areaServed": "Stockholm",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Stockholm",
+        "addressCountry": "SE"
+      },
+      "sameAs": [
+        "https://www.instagram.com/creatinghomes.se/"
+      ],
+      "priceRange": "SEK 12 000–18 000+"
+    }
+  </script>
 </head>
 
 <body id="top">
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KJV6RV8L" height="0" width="0"
-      style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
-  <!-- Heroavsnitt med navigation, video och huvudbudskap -->
+<!-- Heroavsnitt med navigation, video och huvudbudskap -->
   <header class="hero-section">
     <div class="site-header">
       <!-- Toppnavigation med logotyp och responsiv meny -->
       <div class="container site-header__inner">
         <div class="site-header__bar">
-          <a class="site-header__brand" href="#top">
+          <a class="site-header__brand" href="/#top">
             <img class="site-header__logo" src="assets/logo-animation.gif" width="56" height="56" alt=""
               aria-hidden="true" decoding="async" />
             <span class="site-header__brand-text">Creating Homes STHLM AB</span>
@@ -497,11 +471,11 @@
                 decoding="async" />
             </figure>
             <figure class="process-gallery__item" data-gallery-hidden hidden>
-              <img src="pics/gdrive/Roslagsgatan%2042A-9.webp" alt="Entré med skulpturala former" loading="lazy"
+              <img src="pics/gdrive/roslagsgatan-42a-9.webp" alt="Entré med skulpturala former" loading="lazy"
                 decoding="async" />
             </figure>
             <figure class="process-gallery__item" data-gallery-hidden hidden>
-              <img src="pics/gdrive/Roslagsgatan%2042A-18.webp" alt="Social yta med varma nyanser" loading="lazy"
+              <img src="pics/gdrive/roslagsgatan-42a-18.webp" alt="Social yta med varma nyanser" loading="lazy"
                 decoding="async" />
             </figure>
             <figure class="process-gallery__item" data-gallery-hidden hidden>
@@ -573,7 +547,7 @@
           </a>
         </div>
         <div class="guide-preview-wrapper" data-animate="fade-up">
-          <div class="guide-preview" data-guide-viewer data-pdf="Guide_blurred.pdf" data-total-pages="5">
+          <div class="guide-preview" data-guide-viewer data-pdf="docs/Guide_blurred.pdf" data-total-pages="5">
             <div class="guide-preview__canvas" role="img" aria-label="Förhandsvisning av Creating Homes guide">
               <canvas aria-hidden="true"></canvas>
               <div class="guide-preview__loading" data-guide-loading role="status" aria-live="polite">
@@ -963,7 +937,6 @@
     <button class="cta cookie-banner__button" type="button" data-cookie-accept>Acceptera cookies</button>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
   <script src="scripts/guide-viewer.js" defer></script>
   <script src="scripts/hero-video.js" defer></script>
   <script src="scripts/gallery-carousel.js" defer></script>
@@ -978,7 +951,6 @@
   <script src="scripts/contact-form.js" defer></script>
   <script src="scripts/cookie-consent.js" defer></script>
   <!-- Skript som hanterar spårning av CTA:er och formulär -->
-  <script src="scripts/analytics.js" defer></script>
   <!-- Inlinelogik för årtalsuppdatering och mobilnavigation -->
   <script>
     // Uppdaterar årtalet i footern dynamiskt

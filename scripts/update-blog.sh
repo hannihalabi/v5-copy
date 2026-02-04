@@ -4,9 +4,18 @@ set -e
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 ROOT_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 
-SHEET_URL="https://script.google.com/macros/s/AKfycbx6-Hri5vPSuQLlxO6m2BJ2ZeZD-iah8JUtX9zSO_V9RZKXWx0o_US0fdWLvolM_bo/exec"
-SITE_URL="https://creatinghomes.se"
-CLEAN_ORPHANS="true"
+SHEET_URL="${SHEET_URL:-}"
+SITE_URL="${SITE_URL:-}"
+CLEAN_ORPHANS="${CLEAN_ORPHANS:-true}"
+
+if [ -z "$SHEET_URL" ]; then
+  echo "Missing SHEET_URL. Example: SHEET_URL=\"https://script.google.com/.../exec\""
+  exit 1
+fi
+if [ -z "$SITE_URL" ]; then
+  echo "Missing SITE_URL. Example: SITE_URL=\"https://creatinghomes.se\""
+  exit 1
+fi
 
 NODE_BIN="${NODE_BIN:-}"
 if [ -z "$NODE_BIN" ]; then

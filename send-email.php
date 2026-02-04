@@ -125,28 +125,48 @@ try {
 
     // Handle file attachments
     if (isset($_FILES['projectImages']) && !empty($_FILES['projectImages']['name'])) {
-        $allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
-        $max_file_size = 5 * 1024 * 1024; // 5MB
+        $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
+        $max_file_size = 5 * 1024 * 1024; // 5MB per file
+        $max_files = 5;
         $files = $_FILES['projectImages'];
+        $finfo = function_exists('finfo_open') ? finfo_open(FILEINFO_MIME_TYPE) : null;
 
         // Normalise to arrays so single uploads and multiple behave the same
         $names = is_array($files['name']) ? $files['name'] : [$files['name']];
         $tmp_names = is_array($files['tmp_name']) ? $files['tmp_name'] : [$files['tmp_name']];
-        $types = is_array($files['type']) ? $files['type'] : [$files['type']];
         $sizes = is_array($files['size']) ? $files['size'] : [$files['size']];
         $errors = is_array($files['error']) ? $files['error'] : [$files['error']];
 
+        $attached = 0;
         foreach ($names as $key => $file_name) {
-            if ($errors[$key] === UPLOAD_ERR_OK && !empty($file_name)) {
-                $file_size = $sizes[$key];
-                $file_type = $types[$key];
-                $tmp_name = $tmp_names[$key];
-
-                // Validate file type and size
-                if (in_array($file_type, $allowed_types, true) && $file_size <= $max_file_size) {
-                    $mail->addAttachment($tmp_name, $file_name);
-                }
+            if ($attached >= $max_files) {
+                break;
             }
+            if ($errors[$key] !== UPLOAD_ERR_OK || empty($file_name)) {
+                continue;
+            }
+
+            $file_size = $sizes[$key];
+            $tmp_name = $tmp_names[$key];
+            if ($file_size > $max_file_size) {
+                continue;
+            }
+
+            $detected_type = $finfo ? finfo_file($finfo, $tmp_name) : '';
+            if (!in_array($detected_type, $allowed_types, true)) {
+                continue;
+            }
+
+            $safe_name = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($file_name));
+            if ($safe_name === '') {
+                $safe_name = 'attachment';
+            }
+            $mail->addAttachment($tmp_name, $safe_name);
+            $attached += 1;
+        }
+
+        if ($finfo) {
+            finfo_close($finfo);
         }
     }
 

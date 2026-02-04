@@ -1,0 +1,19 @@
+# Creating Homes STHLM AB
+
+site: https://creatinghomes.se
+language: sv-SE
+contact: info@creatinghomes.se
+
+## Summary
+Creating Homes STHLM AB erbjuder homestyling och inredningstjänster i Stockholm med fokus på försäljning, foto och visning.
+
+## Key Pages
+- https://creatinghomes.se/
+- https://creatinghomes.se/artiklar/
+
+## Topics
+- homestyling
+- inredning
+- bostadsförsäljning
+- stylingnivåer (light, medium, full)
+- fotografering och visning

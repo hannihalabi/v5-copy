@@ -1,0 +1,5 @@
+.DS_Store
+config.php
+vendor/
+node_modules/
+*.log

@@ -1,13 +1,23 @@
 (() => {
   const banner = document.querySelector('[data-cookie-banner]');
-  if (!banner) {
-    return;
-  }
-
-  const acceptButton = banner.querySelector('[data-cookie-accept]');
   const storageKey = 'cookie_consent';
   const cookieName = 'cookie_consent';
   const acceptedValue = 'accepted';
+  const gtmId = 'GTM-KJV6RV8L';
+
+  const loadAnalytics = () => {
+    if (!gtmId || window.__gtmLoaded) {
+      return;
+    }
+    window.__gtmLoaded = true;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`;
+    document.head.appendChild(script);
+  };
 
   const hasLocalConsent = () => {
     try {
@@ -41,16 +51,25 @@
   };
 
   if (hasLocalConsent() || hasCookieConsent()) {
-    banner.hidden = true;
+    if (banner) {
+      banner.hidden = true;
+    }
+    loadAnalytics();
+    return;
+  }
+
+  if (!banner) {
     return;
   }
 
   banner.hidden = false;
+  const acceptButton = banner.querySelector('[data-cookie-accept]');
 
   if (acceptButton) {
     acceptButton.addEventListener('click', () => {
       setConsent();
       banner.hidden = true;
+      loadAnalytics();
     });
   }
 })();
