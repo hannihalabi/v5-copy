@@ -26,20 +26,14 @@ require_once __DIR__ . '/config.php';
 // Import PHPMailer classes
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
 
 // Check if PHPMailer is available
-if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
-    http_response_code(500);
-    echo json_encode([
-        'success' => false,
-        'message' => 'Server configuration error. Please contact support.'
-    ]);
-    error_log('PHPMailer not found. Run: composer require phpmailer/phpmailer');
-    exit;
+$phpmailer_available = file_exists(__DIR__ . '/vendor/autoload.php');
+if ($phpmailer_available) {
+    require __DIR__ . '/vendor/autoload.php';
+} else {
+    error_log('PHPMailer not found. Falling back to PHP mail().');
 }
-
-require __DIR__ . '/vendor/autoload.php';
 
 // Validate and sanitize input
 function sanitize_input($data)
@@ -82,6 +76,7 @@ $propertyAddress = sanitize_input($_POST['propertyAddress']);
 $elevatorAvailability = sanitize_input($_POST['elevatorAvailability']);
 $addonsPreference = sanitize_input($_POST['addonsPreference']);
 $message = isset($_POST['message']) ? sanitize_input($_POST['message']) : '';
+$from_address = filter_var(SMTP_USERNAME, FILTER_VALIDATE_EMAIL) ? SMTP_USERNAME : EMAIL_TO;
 
 // Validate email
 if (!$email) {
@@ -90,10 +85,79 @@ if (!$email) {
     exit;
 }
 
-// Create PHPMailer instance
-$mail = new PHPMailer(true);
+// Prepare attachments (shared between PHPMailer and mail() fallback)
+$attachments = [];
+if (isset($_FILES['projectImages']) && !empty($_FILES['projectImages']['name'])) {
+    $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
+    $max_file_size = 5 * 1024 * 1024; // 5MB per file
+    $max_files = 5;
+    $files = $_FILES['projectImages'];
+    $finfo = function_exists('finfo_open') ? finfo_open(FILEINFO_MIME_TYPE) : null;
+
+    // Normalise to arrays so single uploads and multiple behave the same
+    $names = is_array($files['name']) ? $files['name'] : [$files['name']];
+    $tmp_names = is_array($files['tmp_name']) ? $files['tmp_name'] : [$files['tmp_name']];
+    $sizes = is_array($files['size']) ? $files['size'] : [$files['size']];
+    $errors = is_array($files['error']) ? $files['error'] : [$files['error']];
+
+    $attached = 0;
+    foreach ($names as $key => $file_name) {
+        if ($attached >= $max_files) {
+            break;
+        }
+        if ($errors[$key] !== UPLOAD_ERR_OK || empty($file_name)) {
+            continue;
+        }
+
+        $file_size = $sizes[$key];
+        $tmp_name = $tmp_names[$key];
+        if ($file_size > $max_file_size) {
+            continue;
+        }
+
+        $detected_type = $finfo ? finfo_file($finfo, $tmp_name) : '';
+        if (!in_array($detected_type, $allowed_types, true)) {
+            continue;
+        }
+
+        $safe_name = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($file_name));
+        if ($safe_name === '') {
+            $safe_name = 'attachment';
+        }
+
+        $attachments[] = [
+            'tmp_name' => $tmp_name,
+            'name' => $safe_name,
+            'type' => $detected_type,
+        ];
+        $attached += 1;
+    }
+
+    if ($finfo) {
+        finfo_close($finfo);
+    }
+}
+
+$mail = null;
+
+// Build email bodies (shared for PHPMailer + fallback)
+$plain_text_body = "Ny förfrågan från hemsidan\n\n"
+    . "Namn: {$name}\n"
+    . "E-post: {$email}\n"
+    . "Telefon: {$phone}\n"
+    . "Tjänst: {$serviceType}\n"
+    . "Kvadratmeter: {$propertyArea} kvm\n"
+    . "Adress: {$propertyAddress}\n"
+    . "Hiss: {$elevatorAvailability}\n"
+    . "Tilläggstjänster: {$addonsPreference}\n"
+    . (!empty($message) ? "Meddelande: {$message}\n" : "");
 
 try {
+    if (!$phpmailer_available) {
+        throw new \RuntimeException('PHPMailer not available');
+    }
+
+    $mail = new PHPMailer(true);
     // Server settings
     $mail->isSMTP();
     $mail->Host = SMTP_HOST;
@@ -108,7 +172,7 @@ try {
     // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
 
     // Recipients
-    $mail->setFrom(SMTP_USERNAME, 'Creating Homes Website');
+    $mail->setFrom($from_address, 'Creating Homes Website');
     $mail->addAddress(EMAIL_TO);
     $mail->addReplyTo($email, $name);
 
@@ -123,51 +187,9 @@ try {
         }
     }
 
-    // Handle file attachments
-    if (isset($_FILES['projectImages']) && !empty($_FILES['projectImages']['name'])) {
-        $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
-        $max_file_size = 5 * 1024 * 1024; // 5MB per file
-        $max_files = 5;
-        $files = $_FILES['projectImages'];
-        $finfo = function_exists('finfo_open') ? finfo_open(FILEINFO_MIME_TYPE) : null;
-
-        // Normalise to arrays so single uploads and multiple behave the same
-        $names = is_array($files['name']) ? $files['name'] : [$files['name']];
-        $tmp_names = is_array($files['tmp_name']) ? $files['tmp_name'] : [$files['tmp_name']];
-        $sizes = is_array($files['size']) ? $files['size'] : [$files['size']];
-        $errors = is_array($files['error']) ? $files['error'] : [$files['error']];
-
-        $attached = 0;
-        foreach ($names as $key => $file_name) {
-            if ($attached >= $max_files) {
-                break;
-            }
-            if ($errors[$key] !== UPLOAD_ERR_OK || empty($file_name)) {
-                continue;
-            }
-
-            $file_size = $sizes[$key];
-            $tmp_name = $tmp_names[$key];
-            if ($file_size > $max_file_size) {
-                continue;
-            }
-
-            $detected_type = $finfo ? finfo_file($finfo, $tmp_name) : '';
-            if (!in_array($detected_type, $allowed_types, true)) {
-                continue;
-            }
-
-            $safe_name = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($file_name));
-            if ($safe_name === '') {
-                $safe_name = 'attachment';
-            }
-            $mail->addAttachment($tmp_name, $safe_name);
-            $attached += 1;
-        }
-
-        if ($finfo) {
-            finfo_close($finfo);
-        }
+    // Handle file attachments (if any)
+    foreach ($attachments as $attachment) {
+        $mail->addAttachment($attachment['tmp_name'], $attachment['name']);
     }
 
     // Content
@@ -245,16 +267,7 @@ try {
     $mail->Body = $email_body;
 
     // Plain text alternative
-    $mail->AltBody = "Ny förfrågan från hemsidan\n\n"
-        . "Namn: {$name}\n"
-        . "E-post: {$email}\n"
-        . "Telefon: {$phone}\n"
-        . "Tjänst: {$serviceType}\n"
-        . "Kvadratmeter: {$propertyArea} kvm\n"
-        . "Adress: {$propertyAddress}\n"
-        . "Hiss: {$elevatorAvailability}\n"
-        . "Tilläggstjänster: {$addonsPreference}\n"
-        . (!empty($message) ? "Meddelande: {$message}\n" : "");
+    $mail->AltBody = $plain_text_body;
 
     // Send email
     $mail->send();
@@ -265,8 +278,56 @@ try {
         'message' => 'Tack! Vi har mottagit din förfrågan och återkommer inom kort.'
     ]);
 
-} catch (Exception $e) {
-    error_log("Email send failed: {$mail->ErrorInfo}");
+} catch (\Throwable $e) {
+    $error_info = isset($mail) ? $mail->ErrorInfo : $e->getMessage();
+    error_log("Email send failed: {$error_info}");
+
+    // Fallback to PHP mail() if PHPMailer fails or is unavailable
+    $boundary = '=_CreatingHomes_' . bin2hex(random_bytes(12));
+    $headers = [];
+    $headers[] = 'From: Creating Homes Website <' . $from_address . '>';
+    $headers[] = 'Reply-To: ' . $name . ' <' . $email . '>';
+    if (defined('EMAIL_CC') && !empty(EMAIL_CC)) {
+        $cc_list = is_array(EMAIL_CC) ? EMAIL_CC : explode(',', EMAIL_CC);
+        $cc_list = array_filter(array_map('trim', $cc_list));
+        if (!empty($cc_list)) {
+            $headers[] = 'Cc: ' . implode(', ', $cc_list);
+        }
+    }
+    $headers[] = 'MIME-Version: 1.0';
+    $headers[] = 'Content-Type: multipart/mixed; boundary="' . $boundary . '"';
+
+    $body = "--{$boundary}\r\n";
+    $body .= "Content-Type: text/plain; charset=UTF-8\r\n";
+    $body .= "Content-Transfer-Encoding: 8bit\r\n\r\n";
+    $body .= $plain_text_body . "\r\n";
+
+    foreach ($attachments as $attachment) {
+        if (!is_readable($attachment['tmp_name'])) {
+            continue;
+        }
+        $file_data = file_get_contents($attachment['tmp_name']);
+        if ($file_data === false) {
+            continue;
+        }
+        $encoded = chunk_split(base64_encode($file_data));
+        $body .= "--{$boundary}\r\n";
+        $body .= "Content-Type: {$attachment['type']}; name=\"{$attachment['name']}\"\r\n";
+        $body .= "Content-Transfer-Encoding: base64\r\n";
+        $body .= "Content-Disposition: attachment; filename=\"{$attachment['name']}\"\r\n\r\n";
+        $body .= $encoded . "\r\n";
+    }
+    $body .= "--{$boundary}--\r\n";
+
+    $sent = @mail(EMAIL_TO, EMAIL_SUBJECT, $body, implode("\r\n", $headers));
+    if ($sent) {
+        echo json_encode([
+            'success' => true,
+            'message' => 'Tack! Vi har mottagit din förfrågan och återkommer inom kort.'
+        ]);
+        exit;
+    }
+
     http_response_code(500);
     echo json_encode([
         'success' => false,

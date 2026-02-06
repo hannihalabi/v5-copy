@@ -84,15 +84,23 @@
                     body: formData,
                 });
 
-                if (!response.ok) {
-                    throw new Error(`FormSubmit responded with ${response.status}`);
+                let payload = null;
+                try {
+                    payload = await response.json();
+                } catch (parseError) {
+                    payload = null;
                 }
 
-                showMessage("success", successMessage);
+                if (!response.ok || (payload && payload.success === false)) {
+                    const serverMessage = payload && payload.message ? payload.message : null;
+                    throw new Error(serverMessage || `FormSubmit responded with ${response.status}`);
+                }
+
+                showMessage("success", payload && payload.message ? payload.message : successMessage);
                 form.reset();
             } catch (error) {
                 console.error("Lead form submission failed", error);
-                showMessage("error", errorMessage);
+                showMessage("error", error && error.message ? error.message : errorMessage);
             } finally {
                 setLoading(false);
                 isSubmitting = false;

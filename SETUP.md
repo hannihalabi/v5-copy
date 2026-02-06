@@ -108,6 +108,20 @@ $mail->SMTPDebug = SMTP::DEBUG_SERVER;
 - The script validates and sanitizes all inputs
 - File uploads are restricted to images only (max 5MB each)
 
+## SEO Continuity (Run After Every Content/Template Change)
+
+Run this command before deployment to keep SEO-critical files in sync:
+
+```bash
+./scripts/seo-sync.sh
+```
+
+It will:
+- regenerate `sitemap.xml`
+- validate canonical tags
+- verify required files exist: `robots.txt`, `sitemap.xml`, `llms.txt`, `.htaccess`
+- verify `robots.txt` contains the canonical sitemap URL
+
 ## What Changed from FormSubmit
 
 - ✅ No third-party dependency

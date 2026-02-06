@@ -1,4 +1,36 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteRule ^index\.html$ / [R=301,L]
+  # Legacy URLs (old Google results)
+  RewriteRule ^bilder/?$ https://creatinghomes.se/#galleri [R=301,L]
+  RewriteRule ^bilder/skymningsbilder/?$ https://creatinghomes.se/#galleri [R=301,L]
+  RewriteRule ^om-oss/?$ https://creatinghomes.se/#om-oss [R=301,L]
+  RewriteRule ^kontakt/?$ https://creatinghomes.se/#kontakt [R=301,L]
+
+  # Canonical host (non-www)
+  RewriteCond %{HTTP_HOST} !^creatinghomes\.se$ [NC]
+  RewriteRule ^ https://creatinghomes.se%{REQUEST_URI} [R=301,L]
+
+  # Force HTTPS (handles proxy setups via X-Forwarded-Proto)
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+  RewriteRule ^ https://creatinghomes.se%{REQUEST_URI} [R=301,L]
+
+  # Remove explicit index.html from URLs (root and subdirectories)
+  RewriteRule ^(.*/)?index\.html$ /$1 [R=301,L]
 </IfModule>
+
+<IfModule mod_headers.c>
+  # Enforce HTTPS on clients once the redirect has succeeded
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
+
+# Prevent direct access to sensitive config files
+<FilesMatch "^(config|config_new|config\\.example)\\.php$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
