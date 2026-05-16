@@ -7,10 +7,12 @@
         return;
       }
 
+      const emptyText = preview.textContent;
+
       const updatePreview = () => {
         const { files } = input;
         if (!files || files.length === 0) {
-          preview.textContent = "Inga filer valda";
+          preview.textContent = emptyText;
           return;
         }
         if (files.length === 1) {

@@ -3,3 +3,7 @@ config.php
 vendor/
 node_modules/
 *.log
+.vercel/
+.env
+.env.*
+!.env.example

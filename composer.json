@@ -1,7 +1,0 @@
-{
-    "name": "creatinghomes/website",
-    "description": "Creating Homes STHLM AB website with PHP email handling",
-    "require": {
-        "phpmailer/phpmailer": "^6.9"
-    }
-}

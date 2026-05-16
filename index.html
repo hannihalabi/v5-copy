@@ -827,8 +827,10 @@
         <!-- Lead-formulär som samlar in kontaktuppgifter -->
         <form class="lead-form" data-lead-form data-animate="fade-up"
           data-success-message="Tack! Vi har mottagit din förfrågan och återkommer inom kort."
-          data-error-message="Oj! Något gick fel. Försök igen eller mejla oss direkt." action="send-email.php"
-          method="POST" enctype="multipart/form-data">
+          data-error-message="Oj! Något gick fel. Försök igen eller mejla oss direkt."
+          data-file-error-message="Bifoga max 3 bilder i jpg, png eller webp. Varje bild får vara högst 1,5 MB och totalt högst 3 MB."
+          data-max-files="3" data-max-file-size="1572864" data-max-total-file-size="3145728"
+          action="/api/send-email" method="POST" enctype="multipart/form-data">
 
           <label for="name">Namn</label>
           <input id="name" name="name" type="text" required />
@@ -898,13 +900,13 @@
 
           <label for="project-images">Bilder (valfritt)</label>
           <div class="lead-form__file" data-file-upload>
-            <input id="project-images" name="projectImages[]" type="file" accept="image/*" multiple
+            <input id="project-images" name="projectImages[]" type="file" accept="image/jpeg,image/png,image/webp" multiple
               class="lead-form__file-input" />
             <label class="lead-form__file-trigger" for="project-images">Bifoga bilder</label>
             <span class="lead-form__file-preview" data-file-preview>Inga filer valda</span>
           </div>
           <p class="lead-form__hint">
-            Bifoga inspirationsbilder eller foton på bostaden (jpg, png eller webp).
+            Bifoga upp till 3 inspirationsbilder eller foton på bostaden (jpg, png eller webp, max 3 MB totalt).
           </p>
 
           <div class="lead-form__agreement">

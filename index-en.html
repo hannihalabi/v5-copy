@@ -833,7 +833,9 @@
         <form class="lead-form" data-lead-form data-animate="fade-up"
           data-success-message="Thank you! We have received your inquiry and will get back shortly."
           data-error-message="Oops! Something went wrong. Please try again or email us directly."
-          action="send-email.php" method="POST" enctype="multipart/form-data">
+          data-file-error-message="Attach at most 3 jpg, png or webp images. Each image can be up to 1.5 MB and 3 MB in total."
+          data-max-files="3" data-max-file-size="1572864" data-max-total-file-size="3145728"
+          action="/api/send-email" method="POST" enctype="multipart/form-data">
 
           <label for="name">Name</label>
           <input id="name" name="name" type="text" required />
@@ -903,13 +905,13 @@
 
           <label for="project-images">Images (optional)</label>
           <div class="lead-form__file" data-file-upload>
-            <input id="project-images" name="projectImages[]" type="file" accept="image/*" multiple
+            <input id="project-images" name="projectImages[]" type="file" accept="image/jpeg,image/png,image/webp" multiple
               class="lead-form__file-input" />
             <label class="lead-form__file-trigger" for="project-images">Attach images</label>
             <span class="lead-form__file-preview" data-file-preview>No files selected</span>
           </div>
           <p class="lead-form__hint">
-            Attach inspiration images or photos of the home (jpg, png or webp).
+            Attach up to 3 inspiration images or photos of the home (jpg, png or webp, max 3 MB total).
           </p>
 
           <div class="lead-form__agreement">

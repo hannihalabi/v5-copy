@@ -23,14 +23,3 @@
   # Enforce HTTPS on clients once the redirect has succeeded
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 </IfModule>
-
-# Prevent direct access to sensitive config files
-<FilesMatch "^(config|config_new|config\\.example)\\.php$">
-  <IfModule mod_authz_core.c>
-    Require all denied
-  </IfModule>
-  <IfModule !mod_authz_core.c>
-    Order allow,deny
-    Deny from all
-  </IfModule>
-</FilesMatch>

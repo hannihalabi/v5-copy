@@ -1,114 +1,36 @@
-# PHP Email Setup Instructions
+# Vercel Email Setup
 
-## Files Created
+Formuläret skickar nu till Vercel-funktionen `api/send-email.js`.
 
-✅ `send-email.php` - Main email handler
-✅ `config.php` - Email configuration
-✅ `composer.json` - Dependency configuration
-✅ `index.html` - Updated to use PHP backend
-✅ `index-en.html` - Updated to use PHP backend
+## Vercel Environment Variables
 
-## Setup Steps
+Lägg in dessa i Vercel Project Settings -> Environment Variables:
 
-### 1. Install PHPMailer on one.com Server
+```text
+SMTP_HOST=mailout.one.com
+SMTP_PORT=587
+SMTP_USERNAME=<e-postkontot som skickar>
+SMTP_PASSWORD=<lösenord eller app-lösenord>
+EMAIL_FROM=<valfritt, annars SMTP_USERNAME>
+EMAIL_TO=info@creatinghomes.se
+EMAIL_CC=<valfritt, kommaseparerat>
+EMAIL_SUBJECT=Ny förfrågan från hemsidan
+```
 
-You have two options:
+`SMTP_USERNAME` och `SMTP_PASSWORD` är obligatoriska. Övriga har rimliga standardvärden i funktionen.
 
-#### Option A: Using Composer (Recommended)
-If you have SSH access to your one.com server:
+## Bilagor
+
+Formuläret tillåter max 3 bilder i `jpg`, `png` eller `webp`. Varje bild får vara max 1,5 MB och total storlek max 3 MB. Det håller requesten under Vercels gräns för function payloads.
+
+## Lokal kontroll
 
 ```bash
-cd /path/to/your/website
-composer install
+npm install
+npm run check
 ```
 
-#### Option B: Manual Installation
-If you don't have Composer access:
-
-1. Download PHPMailer from: https://github.com/PHPMailer/PHPMailer/releases
-2. Extract the ZIP file
-3. Upload the `src` folder to your server as `vendor/phpmailer/phpmailer/src/`
-
-The directory structure should be:
-```
-your-website/
-├── send-email.php
-├── config.php
-├── index.html
-├── index-en.html
-└── vendor/
-    └── phpmailer/
-        └── phpmailer/
-            └── src/
-                ├── PHPMailer.php
-                ├── SMTP.php
-                ├── Exception.php
-                └── ... (other files)
-```
-
-### 2. Configure Email Password
-
-Edit `config.php` and replace `YOUR_EMAIL_PASSWORD_HERE` with the actual password for `test@creatinghomes.se`:
-
-```php
-define('SMTP_PASSWORD', 'your-actual-password');
-```
-
-**IMPORTANT:** Keep this file secure and never commit it to public repositories!
-
-### 3. Upload Files to one.com
-
-Upload these files to your one.com web server:
-- `send-email.php`
-- `config.php`
-- `composer.json` (optional)
-- `vendor/` folder (with PHPMailer)
-- Updated `index.html`
-- Updated `index-en.html`
-
-### 4. Set File Permissions
-
-Ensure the following permissions on your server:
-- `send-email.php` - 644
-- `config.php` - 644 (or 600 for extra security)
-- `vendor/` folder - 755
-
-### 5. Test the Form
-
-1. Visit your website
-2. Fill out the contact form
-3. Submit it
-4. Check `test@creatinghomes.se` for the email
-
-## Troubleshooting
-
-### Email not sending?
-
-1. Check `error.log` file on your server for error messages
-2. Verify SMTP credentials in `config.php`
-3. Ensure PHPMailer is properly installed in `vendor/` folder
-4. Check that your one.com email account is active
-
-### File upload issues?
-
-- Ensure `upload_max_filesize` is set appropriately in PHP settings
-- Check file permissions on the server
-
-### Still having problems?
-
-Enable debug mode in `send-email.php` by uncommenting this line:
-```php
-$mail->SMTPDebug = SMTP::DEBUG_SERVER;
-```
-
-## Security Notes
-
-- Never commit `config.php` with real passwords to version control
-- Consider adding `config.php` to `.gitignore`
-- The script validates and sanitizes all inputs
-- File uploads are restricted to images only (max 5MB each)
-
-## SEO Continuity (Run After Every Content/Template Change)
+## SEO Continuity
 
 Run this command before deployment to keep SEO-critical files in sync:
 
@@ -121,11 +43,3 @@ It will:
 - validate canonical tags
 - verify required files exist: `robots.txt`, `sitemap.xml`, `llms.txt`, `.htaccess`
 - verify `robots.txt` contains the canonical sitemap URL
-
-## What Changed from FormSubmit
-
-- ✅ No third-party dependency
-- ✅ Full control over email delivery
-- ✅ No email activation required
-- ✅ Works directly with your one.com email
-- ✅ Better error handling and logging
