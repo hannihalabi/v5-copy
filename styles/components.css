@@ -1130,6 +1130,7 @@
   transform: translateY(-50%);
   padding: 0 0.75rem;
   pointer-events: none;
+  z-index: 3;
 }
 
 .media-gallery__btn {
@@ -1167,40 +1168,15 @@
   position: relative;
 }
 
-.media-gallery__viewport::before,
-.media-gallery__viewport::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.75rem;
-  color: var(--color-text-primary);
-  box-shadow: var(--shadow-soft);
-  z-index: 2;
-  pointer-events: none;
-}
-
-.media-gallery__viewport::before {
-  left: 1.25rem;
-  content: "‹";
-}
-
-.media-gallery__viewport::after {
-  right: 1.25rem;
-  content: "›";
-}
 
 @media (max-width: 768px) {
   .media-gallery__viewport {
     width: calc(100% + (var(--space-sm) * 2));
     margin-inline: calc(var(--space-sm) * -1);
+  }
+
+  .media-gallery__controls {
+    display: none;
   }
 }
 
@@ -1259,6 +1235,159 @@
 
 .section--gallery {
   padding-top: 0;
+}
+
+/* Before/after showcase for completed styling transformations */
+.before-after {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.before-after__intro {
+  max-width: 760px;
+}
+
+.before-after-compare {
+  margin: 0;
+  width: min(100%, 980px);
+  justify-self: center;
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.before-after-compare__stage {
+  --before-after-position: 50%;
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--radius-base) * 1.1);
+  aspect-ratio: 16 / 10;
+  background: var(--color-neutral);
+  box-shadow: var(--shadow-soft);
+  touch-action: pan-y;
+  cursor: ew-resize;
+}
+
+.before-after-compare__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+.before-after-compare__before {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 0, var(--before-after-position) 0, var(--before-after-position) 100%, 0 100%);
+}
+
+.before-after-compare__divider {
+  position: absolute;
+  inset: 0 auto 0 var(--before-after-position);
+  width: 2px;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 1px rgba(13, 11, 9, 0.2);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.before-after-compare__handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 54px;
+  height: 54px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  background: rgba(47, 74, 92, 0.78);
+  color: var(--color-text-inverse);
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 24px rgba(13, 11, 9, 0.25);
+}
+
+.before-after-compare__badge {
+  position: absolute;
+  top: var(--space-xs);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  color: var(--color-text-inverse);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+}
+
+.before-after-compare__badge--before {
+  left: var(--space-xs);
+  background: rgba(77, 31, 35, 0.82);
+}
+
+.before-after-compare__badge--after {
+  right: var(--space-xs);
+  background: rgba(47, 74, 92, 0.82);
+}
+
+.before-after-compare__range {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  border: 0;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.before-after-compare:focus-within .before-after-compare__handle {
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.35), 0 0 0 7px rgba(47, 74, 92, 0.45);
+}
+
+.before-after-compare__caption {
+  margin: 0;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.98rem;
+  padding-inline: var(--space-xs);
+}
+
+@media (max-width: 640px) {
+  .before-after-compare__stage {
+    aspect-ratio: 4 / 3;
+  }
+
+  .before-after-compare__handle {
+    width: 46px;
+    height: 46px;
+    font-size: 1rem;
+  }
+
+  .before-after-compare__badge {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.55rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .before-after {
+    gap: var(--space-lg);
+  }
 }
 
 /* Pricing section layout */
@@ -2235,4 +2364,207 @@ section#tjanster .lottie-wrapper {
   height: auto;
   margin: 0 auto var(--space-sm);
   padding-bottom: 48px;
+}
+
+
+/* ── Resultat-sektion (styling som lönar sig) ── */
+
+.resultat-intro {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto var(--space-lg);
+}
+
+.resultat-case {
+  display: grid;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .resultat-case {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Hemnet-inspirerat kort */
+.resultat-card {
+  background: var(--color-surface);
+  border-radius: calc(var(--radius-base) * 2);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.resultat-card__img-wrap {
+  position: relative;
+}
+
+.resultat-card__img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+}
+
+.resultat-card__sold-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: #5a2d82;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  letter-spacing: 0.01em;
+}
+
+.resultat-card__body {
+  padding: var(--space-md);
+}
+
+.resultat-card__address {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+  color: var(--color-text-primary);
+}
+
+.resultat-card__location {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 0.75rem;
+}
+
+.resultat-card__location-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--color-accent);
+}
+
+.resultat-card__meta {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.resultat-card__meta-sep {
+  color: var(--color-neutral);
+}
+
+.resultat-card__divider {
+  border: none;
+  border-top: 1px solid var(--color-neutral);
+  margin: 0.75rem 0;
+}
+
+.resultat-card__price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.resultat-card__price-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.1rem;
+}
+
+.resultat-card__price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.resultat-card__delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #e6f4ec;
+  color: #1a7a3c;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.resultat-card__arrow {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.resultat-card__compare {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Statistik-rutor */
+.resultat-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.resultat-stat {
+  background: var(--color-surface);
+  border-radius: calc(var(--radius-base) * 2);
+  box-shadow: var(--shadow-soft);
+  padding: var(--space-md);
+}
+
+.resultat-stat__value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a7a3c;
+  line-height: 1.1;
+  margin-bottom: 0.35rem;
+}
+
+.resultat-stat__label {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.resultat-stat--cta {
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+}
+
+.resultat-stat--cta p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  margin: 0 0 var(--space-sm);
+}
+
+.resultat-stat--cta .cta {
+  background: #ffffff;
+  color: var(--color-accent);
+  width: 100%;
+  justify-content: center;
+}
+
+.resultat-stat--cta .cta:hover,
+.resultat-stat--cta .cta:focus {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-accent-strong);
+}
+
+.resultat-source {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin-top: var(--space-md);
 }

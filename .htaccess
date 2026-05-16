@@ -4,7 +4,11 @@
   RewriteRule ^bilder/?$ https://creatinghomes.se/#galleri [R=301,L]
   RewriteRule ^bilder/skymningsbilder/?$ https://creatinghomes.se/#galleri [R=301,L]
   RewriteRule ^om-oss/?$ https://creatinghomes.se/#om-oss [R=301,L]
-  RewriteRule ^kontakt/?$ https://creatinghomes.se/#kontakt [R=301,L]
+  RewriteRule ^kontakt/?$ https://creatinghomes.se/#kontakt [R=301,L,NC]
+  RewriteRule ^kontakt\.html/?$ https://creatinghomes.se/#kontakt [R=301,L,NC]
+  RewriteRule ^artiklar$ /artiklar/ [R=301,L]
+  RewriteRule ^artiklar/(salja-bostad|rum-for-rum|kostnad-och-planering|lokalt-stockholm)$ /artiklar/$1/ [R=301,L,NC]
+  RewriteRule ^archive(?:/.*)?$ - [G,L]
 
   # Canonical host (non-www)
   RewriteCond %{HTTP_HOST} !^creatinghomes\.se$ [NC]
@@ -22,4 +26,8 @@
 <IfModule mod_headers.c>
   # Enforce HTTPS on clients once the redirect has succeeded
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+  # Never index archived export files if they are present on disk.
+  SetEnvIf Request_URI "^/archive/" is_archive
+  Header always set X-Robots-Tag "noindex, nofollow, noarchive" env=is_archive
 </IfModule>

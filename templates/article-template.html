@@ -26,6 +26,11 @@
   <meta property="og:type" content="article" />
   <meta property="og:image" content="{{og_image}}" />
   <meta property="og:locale" content="sv_SE" />
+  <meta property="article:published_time" content="{{article_published_time}}" />
+  <meta property="article:modified_time" content="{{article_modified_time}}" />
+  <script type="application/ld+json">
+{{article_json_ld}}
+  </script>
 </head>
 
 <body class="blog-page">
@@ -55,6 +60,7 @@
   </header>
   <main id="content" class="blog-main">
     <div class="container">
+      {{breadcrumbs_html}}
       <section class="blog-hero">
         <p class="blog-eyebrow">Artikel</p>
         <h1 class="blog-title">{{title}}</h1>
@@ -65,6 +71,12 @@
       <article class="blog-article">
         {{content}}
       </article>
+      <section class="blog-article blog-cta" aria-labelledby="contact-cta">
+        <h2 id="contact-cta">Vill du ha hjälp med styling eller inredning?</h2>
+        <p>Berätta kort om ditt projekt så återkommer vi inom 24 timmar.</p>
+        <a class="cta" href="/#kontakt">Boka konsultation</a>
+      </section>
+      {{related_section}}
     </div>
   </main>
   <footer class="blog-footer">

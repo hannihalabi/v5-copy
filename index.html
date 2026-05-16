@@ -22,6 +22,9 @@
   <!-- Laddar Lottie-komponenten som används i sektionerna längre ned -->
   <script type="module" src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.5/dist/dotlottie-wc.js"></script>
   <link rel="canonical" href="https://creatinghomes.se/" />
+  <link rel="alternate" hreflang="sv-SE" href="https://creatinghomes.se/" />
+  <link rel="alternate" hreflang="en" href="https://creatinghomes.se/index-en.html" />
+  <link rel="alternate" hreflang="x-default" href="https://creatinghomes.se/" />
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -180,7 +183,7 @@
               </svg>
             </a>
             <div class="lang-switcher">
-              <a href="#" class="lang-btn lang-btn--active" aria-label="Svenska">🇸🇪</a>
+              <a href="/" class="lang-btn lang-btn--active" aria-label="Svenska">🇸🇪</a>
               <a href="index-en.html" class="lang-btn" aria-label="English">🇬🇧</a>
             </div>
           </div>
@@ -205,6 +208,13 @@
           Vi tar ansvar för helheten – från koncept och projektledning till sista detalj.
           Våra helhetslösningar väver ihop färg, form, logistik och tilläggstjänster så att
           du får ett smidigt flöde genom hela processen.
+        </p>
+        <p data-animate="fade-up">
+          Fördjupa dig i våra guider:
+          <a href="/artiklar/salja-bostad/">Sälja bostad</a>,
+          <a href="/artiklar/rum-for-rum/">Rum för rum</a>,
+          <a href="/artiklar/kostnad-och-planering/">Kostnad och planering</a> och
+          <a href="/artiklar/lokalt-stockholm/">Lokalt i Stockholm</a>.
         </p>
         <!-- Video som förstärker sektionens tema -->
 
@@ -279,6 +289,10 @@
         <div class="gallery-header">
         </div>
         <div class="media-gallery" data-gallery data-gallery-start="1">
+          <div class="media-gallery__controls">
+            <button class="media-gallery__btn" type="button" data-gallery-prev aria-label="Föregående">&#8249;</button>
+            <button class="media-gallery__btn" type="button" data-gallery-next aria-label="Nästa">&#8250;</button>
+          </div>
           <div class="media-gallery__viewport">
             <div class="media-gallery__track" role="list" aria-label="Videoexempel från Creating Homes STHLM AB">
               <figure class="media-gallery__item" data-gallery-slide role="listitem">
@@ -313,6 +327,136 @@
           </div>
         </div>
       </div>
+      </div>
+    </section>
+
+    <!-- Styling som lönar sig – prisresultat -->
+    <section class="section section--light" id="resultat">
+      <div class="container">
+        <div class="resultat-intro" data-animate="fade-up">
+          <h2>Styling som lönar sig</h2>
+          <p>Rätt styling inför visning ger ett tydligt utslag på slutpriset. Nedan är ett verkligt exempel från ett av våra uppdrag.</p>
+        </div>
+
+        <div class="resultat-case" data-animate="fade-up">
+          <!-- Hemnet-inspirerat kort -->
+          <div class="resultat-card">
+            <div class="resultat-card__img-wrap">
+              <img src="pics/blekholmsterrassen.jpg" alt="Blekholmsterrassen 3 – stylinguppdrag av Creating Homes STHLM" class="resultat-card__img" />
+              <span class="resultat-card__sold-badge">Såld 4 dec. 2025</span>
+            </div>
+            <div class="resultat-card__body">
+              <h3 class="resultat-card__address">Blekholmsterrassen 3</h3>
+              <p class="resultat-card__location">
+                <svg class="resultat-card__location-icon" viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><path d="M8 1.5A4.5 4.5 0 0 1 12.5 6c0 3-4.5 8.5-4.5 8.5S3.5 9 3.5 6A4.5 4.5 0 0 1 8 1.5Z" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.4"/></svg>
+                Norrmalm, Stockholms kommun
+              </p>
+              <div class="resultat-card__meta">
+                <span>52 m²</span>
+                <span class="resultat-card__meta-sep">·</span>
+                <span>2 rum</span>
+              </div>
+              <hr class="resultat-card__divider" />
+              <div class="resultat-card__price-row">
+                <div>
+                  <span class="resultat-card__price-label">Slutpris</span>
+                  <span class="resultat-card__price">5 000 000 kr</span>
+                </div>
+                <span class="resultat-card__delta">
+                  <svg viewBox="0 0 12 12" width="14" height="14" fill="none" aria-hidden="true" class="resultat-card__arrow"><path d="M6 10V2M2 6l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  +5,3 %
+                </span>
+              </div>
+              <p class="resultat-card__compare">Liknande ostylade objekt såldes för <strong>4 750 000 kr</strong></p>
+            </div>
+          </div>
+
+          <!-- Statistik-rutor -->
+          <div class="resultat-stats">
+            <div class="resultat-stat">
+              <span class="resultat-stat__value">+250 000 kr</span>
+              <span class="resultat-stat__label">Mervärde över liknande objekt</span>
+            </div>
+            <div class="resultat-stat">
+              <span class="resultat-stat__value">↑ 5,3 %</span>
+              <span class="resultat-stat__label">Högre slutpris med styling</span>
+            </div>
+            <div class="resultat-stat resultat-stat--cta">
+              <p>Stylingen kostar en bråkdel av mervärdet. Vill du veta vad vi kan göra för din bostad?</p>
+              <a href="#kontakt" class="cta">Boka styling</a>
+            </div>
+          </div>
+        </div>
+
+        <p class="resultat-source" data-animate="fade-up">Källa: Hemnet. Jämförelsen baseras på liknande objekt i samma område och tidsperiod.</p>
+      </div>
+    </section>
+
+    <!-- Före och efter från tidigare stylingprojekt -->
+    <section class="section section--alt" id="fore-efter">
+      <div class="container before-after">
+        <div class="before-after__intro" data-animate="fade-up">
+          <h2>Före &amp; efter</h2>
+          <p>
+            Se skillnaden när vi stylar ett rum med fokus på ljus, balans och rätt känsla för visning.
+          </p>
+        </div>
+        <figure class="before-after-compare" data-before-after data-animate="fade-up">
+          <div class="before-after-compare__stage">
+            <img class="before-after-compare__image before-after-compare__image--after"
+              src="pics/for-och-efter/kok-efter.JPG" alt="Kök efter styling med harmonisk möblering, textilier och dekor"
+              loading="lazy" decoding="async" />
+            <div class="before-after-compare__before" aria-hidden="true">
+              <img class="before-after-compare__image before-after-compare__image--before"
+                src="pics/for-och-efter/kok-fore.jpg" alt="" loading="lazy" decoding="async" />
+            </div>
+            <div class="before-after-compare__divider" aria-hidden="true">
+              <span class="before-after-compare__handle">↔</span>
+            </div>
+            <span class="before-after-compare__badge before-after-compare__badge--before" aria-hidden="true">Före</span>
+            <span class="before-after-compare__badge before-after-compare__badge--after" aria-hidden="true">Efter</span>
+            <input class="before-after-compare__range" data-before-after-range type="range" min="0" max="100" step="1"
+              value="50" aria-label="Dra reglaget för att jämföra före och efter" />
+          </div>
+        </figure>
+        <figure class="before-after-compare" data-before-after data-animate="fade-up">
+          <div class="before-after-compare__stage">
+            <img class="before-after-compare__image before-after-compare__image--after"
+              src="pics/for-och-efter/sovrum-efter.JPG"
+              alt="Sovrum efter styling med mjuka textilier och harmonisk färgpalett" loading="lazy"
+              decoding="async" />
+            <div class="before-after-compare__before" aria-hidden="true">
+              <img class="before-after-compare__image before-after-compare__image--before"
+                src="pics/for-och-efter/sovrum-fore.jpg" alt="" loading="lazy" decoding="async" />
+            </div>
+            <div class="before-after-compare__divider" aria-hidden="true">
+              <span class="before-after-compare__handle">↔</span>
+            </div>
+            <span class="before-after-compare__badge before-after-compare__badge--before" aria-hidden="true">Före</span>
+            <span class="before-after-compare__badge before-after-compare__badge--after" aria-hidden="true">Efter</span>
+            <input class="before-after-compare__range" data-before-after-range type="range" min="0" max="100" step="1"
+              value="50" aria-label="Dra reglaget för att jämföra före och efter" />
+          </div>
+        </figure>
+        <figure class="before-after-compare" data-before-after data-animate="fade-up">
+          <div class="before-after-compare__stage">
+            <img class="before-after-compare__image before-after-compare__image--after"
+              src="pics/for-och-efter/vardagsrum-efter.JPG"
+              alt="Vardagsrum efter styling med balanserad möblering och varm helhetskänsla" loading="lazy"
+              decoding="async" />
+            <div class="before-after-compare__before" aria-hidden="true">
+              <img class="before-after-compare__image before-after-compare__image--before"
+                src="pics/for-och-efter/vardagsrum-fore.jpg" alt="" loading="lazy" decoding="async" />
+            </div>
+            <div class="before-after-compare__divider" aria-hidden="true">
+              <span class="before-after-compare__handle">↔</span>
+            </div>
+            <span class="before-after-compare__badge before-after-compare__badge--before" aria-hidden="true">Före</span>
+            <span class="before-after-compare__badge before-after-compare__badge--after" aria-hidden="true">Efter</span>
+            <input class="before-after-compare__range" data-before-after-range type="range" min="0" max="100" step="1"
+              value="50" aria-label="Dra reglaget för att jämföra före och efter" />
+          </div>
+        </figure>
       </div>
     </section>
 
@@ -512,7 +656,7 @@
           aria-label="Stäng bildvisning">
           ×
         </button>
-        <img class="process-gallery-lightbox__image" data-lightbox-image src="" alt="" />
+        <img class="process-gallery-lightbox__image" data-lightbox-image src="" alt="Förhandsvisning av projektbild" />
       </div>
     </div>
 
@@ -955,6 +1099,7 @@
   <script src="scripts/process-gallery.min.js" defer></script>
   <script src="scripts/lazy-video.min.js" defer></script>
   <script src="scripts/reco-carousel.min.js" defer></script>
+  <script src="scripts/before-after.min.js" defer></script>
   <script src="scripts/contact-form.min.js" defer></script>
   <script src="scripts/cookie-consent.min.js" defer></script>
   <!-- Skript som hanterar spårning av CTA:er och formulär -->

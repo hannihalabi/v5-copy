@@ -22,16 +22,19 @@ def main() -> int:
     errors: list[str] = []
 
     # Root pages
-    root_pages = [root / "index.html", root / "index-en.html"]
-    for page in root_pages:
+    expected_root_canonicals = {
+        root / "index.html": "https://creatinghomes.se/",
+        root / "index-en.html": "https://creatinghomes.se/index-en.html",
+    }
+    for page, expected in expected_root_canonicals.items():
         if not page.exists():
             continue
         canonical = find_canonical(page.read_text(encoding="utf-8", errors="ignore"))
         if not canonical:
             errors.append(f"Missing canonical: {page}")
             continue
-        if canonical != "https://creatinghomes.se/":
-            errors.append(f"Unexpected canonical: {page} -> {canonical}")
+        if canonical != expected:
+            errors.append(f"Unexpected canonical: {page} -> {canonical} (expected {expected})")
 
     # Articles index
     articles_index = root / "artiklar" / "index.html"

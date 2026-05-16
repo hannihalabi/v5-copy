@@ -5,7 +5,7 @@
 <!-- Metadata och SEO-inställningar för sidan -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Creating Homes STHLM AB – Premium interior styling för hem och kontor</title>
+  <title>Creating Homes STHLM AB – Premium interior styling for homes and offices</title>
   <meta name="description"
     content="Creating Homes STHLM AB helps you with personal interior styling and home decor that increases the value of your home. Book a free consultation today." />
   <!-- Förladdning av externa typsnitt och övergripande stilmallar -->
@@ -21,14 +21,17 @@
   <link rel="stylesheet" href="styles/i18n.min.css" />
   <!-- Laddar Lottie-komponenten som används i sektionerna längre ned -->
   <script type="module" src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.5/dist/dotlottie-wc.js"></script>
-  <link rel="canonical" href="https://creatinghomes.se/" />
+  <link rel="canonical" href="https://creatinghomes.se/index-en.html" />
+  <link rel="alternate" hreflang="sv-SE" href="https://creatinghomes.se/" />
+  <link rel="alternate" hreflang="en" href="https://creatinghomes.se/index-en.html" />
+  <link rel="alternate" hreflang="x-default" href="https://creatinghomes.se/" />
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
   <!-- Open Graph-data för social delning -->
-  <meta property="og:title" content="Creating Homes STHLM AB – Premium interior styling" />
+  <meta property="og:title" content="Creating Homes STHLM AB – Premium interior styling for homes and offices" />
   <meta property="og:description"
     content="Professional interior styling that reflects your style and increases the value of your home. Book a free consultation." />
   <meta property="og:type" content="website" />
@@ -86,19 +89,19 @@
         <nav class="site-nav" id="site-nav" aria-label="Main navigation">
           <ul class="site-nav__list">
             <li class="site-nav__item">
-              <a class="site-nav__link" href="#services">Services</a>
+              <a class="site-nav__link" href="#tjanster">Services</a>
             </li>
             <li class="site-nav__item">
               <a class="site-nav__link" href="#process">Process</a>
             </li>
             <li class="site-nav__item">
-              <a class="site-nav__link" href="#pricing">Pricing</a>
+              <a class="site-nav__link" href="#prislista">Pricing</a>
             </li>
             <li class="site-nav__item">
               <a class="site-nav__link" href="#testimonials">Testimonials</a>
             </li>
             <li class="site-nav__item">
-              <a class="site-nav__link" href="#about-us">About us</a>
+              <a class="site-nav__link" href="#om-oss">About us</a>
             </li>
             <li class="site-nav__item">
               <a class="site-nav__link" href="#faq">FAQ</a>
@@ -107,7 +110,7 @@
               <a class="site-nav__link" href="/artiklar/">News</a>
             </li>
             <li class="site-nav__item">
-              <a class="site-nav__link site-nav__link--cta" href="#contact">Contact</a>
+              <a class="site-nav__link site-nav__link--cta" href="#kontakt">Contact</a>
             </li>
             <li class="site-nav__item site-nav__item--social">
               <a class="site-nav__social-link" href="https://www.instagram.com/creatinghomes.se/" target="_blank"
@@ -164,7 +167,7 @@
           </p>
           <!-- Call-to-action-länkar för kontakt och portfolio -->
           <div class="hero__actions">
-            <a class="cta" href="#contact" data-cta="hero-primary">
+            <a class="cta" href="#kontakt" data-cta="hero-primary">
               Book consultation
             </a>
             <a class="cta cta--ghost" href="#galleri" data-cta="hero-secondary">
@@ -181,7 +184,7 @@
             </a>
             <div class="lang-switcher">
               <a href="index.html" class="lang-btn" aria-label="Svenska">🇸🇪</a>
-              <a href="#" class="lang-btn lang-btn--active" aria-label="English">🇬🇧</a>
+              <a href="/index-en.html" class="lang-btn lang-btn--active" aria-label="English">🇬🇧</a>
             </div>
           </div>
         </div>
@@ -205,6 +208,13 @@
           We take responsibility for the whole – from concept and project management to the last detail.
           Our comprehensive solutions weave together color, form, logistics, and additional services so that
           you get a smooth flow through the entire process.
+        </p>
+        <p data-animate="fade-up">
+          Explore our article hubs:
+          <a href="/artiklar/salja-bostad/">Selling your home</a>,
+          <a href="/artiklar/rum-for-rum/">Room by room</a>,
+          <a href="/artiklar/kostnad-och-planering/">Cost and planning</a> and
+          <a href="/artiklar/lokalt-stockholm/">Stockholm local</a>.
         </p>
         <!-- Video som förstärker sektionens tema -->
 
@@ -513,7 +523,7 @@
         <button class="process-gallery-lightbox__close" type="button" data-lightbox-close aria-label="Close image view">
           ×
         </button>
-        <img class="process-gallery-lightbox__image" data-lightbox-image src="" alt="" />
+        <img class="process-gallery-lightbox__image" data-lightbox-image src="" alt="Project image preview" />
       </div>
     </div>
 
@@ -548,7 +558,7 @@
             The guide is perfect for you who want to understand how we think about color, form, and flow – and
             gives concrete advice you can start with immediately.
           </p>
-          <a class="cta" href="#contact">
+          <a class="cta" href="#kontakt">
             Order the guide
           </a>
         </div>

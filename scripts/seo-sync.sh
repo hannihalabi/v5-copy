@@ -23,4 +23,14 @@ if ! grep -q '^Sitemap: https://creatinghomes.se/sitemap.xml$' robots.txt; then
   exit 1
 fi
 
+if ! grep -q '^Disallow: /archive/$' robots.txt; then
+  echo "robots.txt must disallow /archive/ to avoid indexing exported files." >&2
+  exit 1
+fi
+
+if ! grep -q 'RewriteRule \^archive' .htaccess; then
+  echo ".htaccess is missing archive hard-block rewrite rule." >&2
+  exit 1
+fi
+
 echo "4/4 Done. SEO sync checks passed."

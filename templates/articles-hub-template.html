@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="sv">
+
+<head>
+<meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{{meta_title}} | Creating Homes</title>
+  <meta name="description" content="{{meta_description}}" />
+  <link rel="canonical" href="{{canonical_url}}" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/base.min.css" />
+  <link rel="stylesheet" href="/styles/layout.min.css" />
+  <link rel="stylesheet" href="/styles/components.min.css" />
+  <link rel="stylesheet" href="/styles/blog.min.css" />
+  <meta property="og:title" content="{{og_title}}" />
+  <meta property="og:description" content="{{og_description}}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="{{og_image}}" />
+  <meta property="og:locale" content="sv_SE" />
+</head>
+
+<body class="blog-page blog-page--index">
+<a class="skip-link" href="#content">Skip to content</a>
+  <header class="blog-header">
+    <div class="container blog-header__inner">
+      <a class="blog-header__brand" href="/">
+        <img class="blog-header__logo" src="/assets/logo-animation.gif" width="56" height="56" alt=""
+          aria-hidden="true" decoding="async" />
+        <span class="blog-header__brand-text">Creating Homes STHLM AB</span>
+      </a>
+      <button class="blog-header__toggle" type="button" aria-expanded="false" aria-controls="blog-nav"
+        data-blog-nav-toggle>
+        <span class="blog-header__toggle-bars" aria-hidden="true">
+          <span class="blog-header__toggle-bar"></span>
+          <span class="blog-header__toggle-bar"></span>
+          <span class="blog-header__toggle-bar"></span>
+        </span>
+        <span class="visually-hidden">Visa eller dölj menyn</span>
+      </button>
+      <nav class="blog-header__nav" id="blog-nav" aria-label="Page">
+        <a class="blog-header__link" href="/artiklar/">Nyheter</a>
+        <a class="blog-header__link" href="/#kontakt">Kontakt</a>
+        <a class="blog-header__link blog-header__link--cta" href="/">Startsida</a>
+      </nav>
+    </div>
+  </header>
+  <main id="content" class="blog-main">
+    <div class="container">
+      <nav class="blog-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Startsida</a>
+        <span class="blog-breadcrumbs__sep" aria-hidden="true">/</span>
+        <a href="/artiklar/">Nyheter</a>
+        <span class="blog-breadcrumbs__sep" aria-hidden="true">/</span>
+        <span aria-current="page">{{hub_title}}</span>
+      </nav>
+      <section class="blog-hero blog-hero--index">
+        <p class="blog-eyebrow">Artikelhubb</p>
+        <h1 class="blog-title">{{hub_title}}</h1>
+        <p class="blog-lead">{{hub_lead}}</p>
+      </section>
+      <section class="blog-intro">
+        <p>{{hub_intro}}</p>
+      </section>
+      <section class="blog-hubs" aria-labelledby="other-hubs">
+        <h2 id="other-hubs">Utforska fler ämnen</h2>
+        <div class="blog-hub-grid">
+          {{all_hubs_html}}
+        </div>
+      </section>
+      <section class="blog-index blog-related" aria-labelledby="featured-articles">
+        <h2 id="featured-articles">Prioriterade artiklar i ämnet</h2>
+        <div class="blog-list">
+          {{hub_featured_html}}
+        </div>
+      </section>
+      <section class="blog-index" aria-labelledby="all-articles-in-hub">
+        <h2 id="all-articles-in-hub">Alla artiklar i {{hub_title}}</h2>
+        <div class="blog-list">
+          {{hub_posts_html}}
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer class="blog-footer">
+    <div class="container blog-footer__inner">
+      <p class="blog-footer__text">Creating Homes STHLM AB</p>
+      <a class="blog-footer__link" href="/">Tillbaka till startsidan</a>
+    </div>
+  </footer>
+  <div class="cookie-banner" data-cookie-banner>
+    <div class="cookie-banner__content">
+      <p class="cookie-banner__title">Vi använder cookies</p>
+      <p class="cookie-banner__text">Vi använder cookies för att förbättra upplevelsen och analysera trafiken.</p>
+    </div>
+    <button class="cta cookie-banner__button" type="button" data-cookie-accept>Acceptera cookies</button>
+  </div>
+  <script src="/scripts/blog-nav.min.js" defer></script>
+  <script src="/scripts/cookie-consent.min.js" defer></script>
+</body>
+
+</html>
