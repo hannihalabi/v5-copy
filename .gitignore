@@ -1,5 +1,4 @@
 .DS_Store
-config.php
 SSH-setup.md
 node_modules/
 *.log
