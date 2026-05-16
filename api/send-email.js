@@ -239,54 +239,52 @@ const sendEmail = async (fields, attachments) => {
     });
 };
 
-export default {
-    async fetch(request) {
-        if (request.method === "OPTIONS") {
-            return new Response(null, {
-                status: 204,
-                headers: {
-                    Allow: "POST, OPTIONS",
-                    "Access-Control-Allow-Methods": "POST, OPTIONS",
-                    "Access-Control-Allow-Headers": "Content-Type, Accept",
-                },
-            });
-        }
-
-        if (request.method !== "POST") {
-            return json({ success: false, message: "Method not allowed" }, 405);
-        }
-
-        let formData;
-        try {
-            formData = await request.formData();
-        } catch (error) {
-            return json({ success: false, message: "Formuläret kunde inte läsas." }, 400);
-        }
-
-        const fields = getFieldValues(formData);
-        const validationError = validateFields(fields);
-        if (validationError) {
-            return json({ success: false, message: validationError }, 400);
-        }
-
-        const { error: attachmentError, attachments } = await collectAttachments(formData);
-        if (attachmentError) {
-            return json({ success: false, message: attachmentError }, 400);
-        }
-
-        try {
-            await sendEmail(fields, attachments);
-        } catch (error) {
-            console.error("Email send failed", error);
-            return json(
-                {
-                    success: false,
-                    message: "Oj! Något gick fel. Försök igen eller mejla oss direkt.",
-                },
-                500,
-            );
-        }
-
-        return json({ success: true });
-    },
+export const config = {
+    runtime: "nodejs",
 };
+
+export async function OPTIONS() {
+    return new Response(null, {
+        status: 204,
+        headers: {
+            Allow: "POST, OPTIONS",
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Accept",
+        },
+    });
+}
+
+export async function POST(request) {
+    let formData;
+    try {
+        formData = await request.formData();
+    } catch (error) {
+        return json({ success: false, message: "Formuläret kunde inte läsas." }, 400);
+    }
+
+    const fields = getFieldValues(formData);
+    const validationError = validateFields(fields);
+    if (validationError) {
+        return json({ success: false, message: validationError }, 400);
+    }
+
+    const { error: attachmentError, attachments } = await collectAttachments(formData);
+    if (attachmentError) {
+        return json({ success: false, message: attachmentError }, 400);
+    }
+
+    try {
+        await sendEmail(fields, attachments);
+    } catch (error) {
+        console.error("Email send failed", error);
+        return json(
+            {
+                success: false,
+                message: "Oj! Något gick fel. Försök igen eller mejla oss direkt.",
+            },
+            500,
+        );
+    }
+
+    return json({ success: true });
+}
