@@ -9,6 +9,7 @@ const BASE_PATH = 'artiklar';
 const TEMPLATE_PATH = path.join(ROOT_DIR, 'templates', 'article-template.html');
 const INDEX_TEMPLATE_PATH = path.join(ROOT_DIR, 'templates', 'articles-index-template.html');
 const HUB_TEMPLATE_PATH = path.join(ROOT_DIR, 'templates', 'articles-hub-template.html');
+const LOCAL_POSTS_PATH = path.join(ROOT_DIR, 'content', 'local-posts.json');
 const OUTPUT_DIR = path.join(ROOT_DIR, BASE_PATH);
 
 const HUBS = [
@@ -87,11 +88,19 @@ const SLUG_TO_HUB = {
   'inredningshjalp-sodermalm': 'lokalt-stockholm',
   'inredningshjalp-tyreso': 'lokalt-stockholm',
   'inredningshjalp-vasterhaninge': 'lokalt-stockholm',
-  'interior-styling': 'lokalt-stockholm'
+  'interior-styling': 'lokalt-stockholm',
+  'mitt-hem-kanns-kallt-vad-saknas': 'rum-for-rum',
+  'moblera-stort-vardagsrum': 'rum-for-rum',
+  'hur-stor-matta-under-soffan': 'rum-for-rum',
+  'blanda-olika-inredningsstilar': 'rum-for-rum',
+  'inreda-nybyggt-hus': 'rum-for-rum',
+  'skapa-rod-trad-i-hemmet': 'rum-for-rum',
+  'hjalp-med-fargsattning-hemma': 'rum-for-rum'
 };
 
 const SHEET_URL = process.env.SHEET_URL;
-if (!SHEET_URL) {
+const LOCAL_ONLY = isTruthy(process.env.LOCAL_ONLY);
+if (!SHEET_URL && !LOCAL_ONLY) {
   console.error('Missing SHEET_URL. Example: SHEET_URL="https://script.google.com/.../exec"');
   process.exit(1);
 }
@@ -105,30 +114,38 @@ const template = await readFile(TEMPLATE_PATH, 'utf8');
 const indexTemplate = await readFile(INDEX_TEMPLATE_PATH, 'utf8');
 const hubTemplate = await readFile(HUB_TEMPLATE_PATH, 'utf8');
 
-const response = await fetch(SHEET_URL, {
-  headers: {
-    'Cache-Control': 'no-cache'
+let rows = [];
+if (SHEET_URL) {
+  const response = await fetch(SHEET_URL, {
+    headers: {
+      'Cache-Control': 'no-cache'
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch sheet data: ${response.status} ${response.statusText}`);
   }
-});
 
-if (!response.ok) {
-  throw new Error(`Failed to fetch sheet data: ${response.status} ${response.statusText}`);
+  const responseText = await response.text();
+  try {
+    rows = JSON.parse(responseText);
+  } catch (error) {
+    const preview = responseText.replace(/\s+/g, ' ').slice(0, 200);
+    throw new Error(
+      'Sheet response was not JSON. Make sure the Apps Script web app is deployed with access "Anyone" ' +
+        'and you are using the /exec URL. First bytes: ' +
+        preview
+    );
+  }
+  if (!Array.isArray(rows)) {
+    throw new Error('Expected the sheet web app to return a JSON array.');
+  }
 }
 
-const responseText = await response.text();
-let rows;
-try {
-  rows = JSON.parse(responseText);
-} catch (error) {
-  const preview = responseText.replace(/\s+/g, ' ').slice(0, 200);
-  throw new Error(
-    'Sheet response was not JSON. Make sure the Apps Script web app is deployed with access "Anyone" ' +
-      'and you are using the /exec URL. First bytes: ' +
-      preview
-  );
-}
-if (!Array.isArray(rows)) {
-  throw new Error('Expected the sheet web app to return a JSON array.');
+const localRows = await readLocalPosts();
+if (localRows.length) {
+  const localSlugs = new Set(localRows.map((row) => slugify(toText(row.slug) || toText(row.title))));
+  rows = [...rows.filter((row) => !localSlugs.has(slugify(toText(row?.slug) || toText(row?.title)))), ...localRows];
 }
 
 let written = 0;
@@ -247,20 +264,22 @@ for (const post of sortedPosts) {
   written += 1;
 }
 
-const indexHtml = buildIndexHtml(indexTemplate, sortedPosts, SITE_URL, postsByHub);
-await mkdir(OUTPUT_DIR, { recursive: true });
-await writeFile(path.join(OUTPUT_DIR, 'index.html'), indexHtml);
+if (!LOCAL_ONLY) {
+  const indexHtml = buildIndexHtml(indexTemplate, sortedPosts, SITE_URL, postsByHub);
+  await mkdir(OUTPUT_DIR, { recursive: true });
+  await writeFile(path.join(OUTPUT_DIR, 'index.html'), indexHtml);
 
-for (const hub of HUBS) {
-  const hubPosts = postsByHub.get(hub.id) || [];
-  const hubDir = path.join(OUTPUT_DIR, hub.slug);
-  await mkdir(hubDir, { recursive: true });
-  const hubHtml = buildHubHtml(hubTemplate, hub, hubPosts, postsByHub, SITE_URL);
-  await writeFile(path.join(hubDir, 'index.html'), hubHtml);
-  writtenHubs += 1;
+  for (const hub of HUBS) {
+    const hubPosts = postsByHub.get(hub.id) || [];
+    const hubDir = path.join(OUTPUT_DIR, hub.slug);
+    await mkdir(hubDir, { recursive: true });
+    const hubHtml = buildHubHtml(hubTemplate, hub, hubPosts, postsByHub, SITE_URL);
+    await writeFile(path.join(hubDir, 'index.html'), hubHtml);
+    writtenHubs += 1;
+  }
 }
 
-if (CLEAN_ORPHANS) {
+if (CLEAN_ORPHANS && !LOCAL_ONLY) {
   const keepDirectories = [...posts.map((post) => post.slug), ...HUBS.map((hub) => hub.slug)];
   const removed = await cleanupOrphans(OUTPUT_DIR, keepDirectories);
   if (removed.length) {
@@ -269,8 +288,10 @@ if (CLEAN_ORPHANS) {
 }
 
 console.log(`Generated ${written} posts in ${OUTPUT_DIR}`);
-console.log(`Generated index page at ${path.join(OUTPUT_DIR, 'index.html')}`);
-console.log(`Generated ${writtenHubs} hub pages in ${OUTPUT_DIR}`);
+if (!LOCAL_ONLY) {
+  console.log(`Generated index page at ${path.join(OUTPUT_DIR, 'index.html')}`);
+  console.log(`Generated ${writtenHubs} hub pages in ${OUTPUT_DIR}`);
+}
 
 function resolveHubId(row, slug) {
   const explicit = toText(row.hub || row.cluster || row.topic || row.category);
@@ -307,6 +328,22 @@ function resolveHubId(row, slug) {
   }
 
   return 'salja-bostad';
+}
+
+async function readLocalPosts() {
+  try {
+    const source = await readFile(LOCAL_POSTS_PATH, 'utf8');
+    const posts = JSON.parse(source);
+    if (!Array.isArray(posts)) {
+      throw new Error('Expected a JSON array.');
+    }
+    return posts;
+  } catch (error) {
+    if (error?.code === 'ENOENT') {
+      return [];
+    }
+    throw new Error(`Could not read ${LOCAL_POSTS_PATH}: ${error.message}`);
+  }
 }
 
 function groupPostsByHub(posts) {
